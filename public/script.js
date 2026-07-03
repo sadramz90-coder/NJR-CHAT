@@ -1,4 +1,8 @@
-const socket = io();
+// ===== اتصال به سرور با تنظیمات مخصوص Railway =====
+const socket = io({
+    transports: ['websocket', 'polling'],
+    path: '/socket.io/'
+});
 
 // ===== عناصر DOM =====
 const loginScreen = document.getElementById('login-screen');
@@ -128,9 +132,4 @@ socket.on('user-left', (username) => {
 });
 
 function addSystemMessage(text) {
-    const div = document.createElement('div');
-    div.style.cssText = `
-        text-align: center;
-        color: #999;
-        font-size: 13px;
-      
+    c

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NJR-CHAT 💬</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- صفحه ورود -->
+    <div id="login-screen" class="login-container">
+        <div class="login-box">
+            <div class="logo">
+                <span class="gold-text">💬</span>
+                <h1>NJR-CHAT</h1>
+            </div>
+            <p class="subtitle">به جمع دوستان خوش آمدی</p>
+            <input type="text" id="username-input" placeholder="نام خود را وارد کن..." maxlength="20">
+            <button id="join-btn" class="gold-btn">ورود به چت</button>
+        </div>
+    </div>
+
+    <!-- صفحه چت -->
+    <div id="chat-screen" style="display:none;">
+        <div class="chat-container">
+            <!-- هدر -->
+            <div class="chat-header">
+                <div class="header-left">
+                    <span class="gold-text">💬</span>
+                    <h2>NJR-CHAT</h2>
+                </div>
+                <div class="header-right">
+                    <span id="online-count" class="online-badge">۰ آنلاین</span>
+                    <button id="logout-btn" class="logout-btn">🚪</button>
+                </div>
+            </div>
+
+            <!-- لیست کاربران آنلاین -->
+            <div class="users-bar">
+                <div id="users-list" class="users-list"></div>
+            </div>
+
+            <!-- پیام‌ها -->
+            <div id="messages-container" class="messages-container">
+                <div id="messages" class="messages"></div>
+            </div>
+
+            <!-- نشانگر تایپ -->
+            <div id="typing-indicator" class="typing-indicator"></div>
+
+            <!-- ورودی پیام -->
+            <div class="input-area">
+                <input type="text" id="message-input" placeholder="پیامت رو بنویس..." maxlength="500">
+                <button id="send-btn" class="send-btn">📤</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

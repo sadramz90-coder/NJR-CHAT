@@ -1,0 +1,210 @@
+/* ===== تنظیمات پایه ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --black: #0a0a0a;
+    --black-light: #1a1a1a;
+    --black-card: #141414;
+    --gold: #d4a843;
+    --gold-light: #f5d77b;
+    --gold-glow: rgba(212, 168, 67, 0.3);
+    --text-light: #f0ece4;
+    --text-gray: #999;
+    --border-gold: rgba(212, 168, 67, 0.2);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--black);
+    color: var(--text-light);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ===== صفحه ورود ===== */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    background: radial-gradient(ellipse at center, #1a1205 0%, #0a0a0a 100%);
+}
+
+.login-box {
+    background: var(--black-card);
+    padding: 50px 40px;
+    border-radius: 20px;
+    border: 1px solid var(--border-gold);
+    box-shadow: 0 0 60px var(--gold-glow);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    animation: fadeIn 0.5s ease;
+}
+
+.logo {
+    margin-bottom: 10px;
+}
+
+.logo .gold-text {
+    font-size: 48px;
+    display: block;
+}
+
+.logo h1 {
+    color: var(--gold);
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-top: 5px;
+}
+
+.subtitle {
+    color: var(--text-gray);
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+#username-input {
+    width: 100%;
+    padding: 15px 20px;
+    background: var(--black);
+    border: 2px solid var(--border-gold);
+    border-radius: 12px;
+    color: var(--text-light);
+    font-size: 16px;
+    outline: none;
+    transition: all 0.3s;
+    margin-bottom: 20px;
+}
+
+#username-input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 20px var(--gold-glow);
+}
+
+.gold-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border: none;
+    border-radius: 12px;
+    color: var(--black);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.gold-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 30px var(--gold-glow);
+}
+
+/* ===== صفحه چت ===== */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--black);
+}
+
+/* هدر */
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    background: var(--black-light);
+    border-bottom: 1px solid var(--border-gold);
+    flex-shrink: 0;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-left .gold-text {
+    font-size: 28px;
+}
+
+.header-left h2 {
+    color: var(--gold);
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.online-badge {
+    background: var(--black);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    color: var(--gold-light);
+    border: 1px solid var(--border-gold);
+}
+
+.logout-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-gray);
+    font-size: 22px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.logout-btn:hover {
+    color: var(--gold);
+}
+
+/* نوار کاربران */
+.users-bar {
+    padding: 8px 20px;
+    background: var(--black-light);
+    border-bottom: 1px solid var(--border-gold);
+    flex-shrink: 0;
+    overflow-x: auto;
+}
+
+.users-list {
+    display: flex;
+    gap: 12px;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.user-chip {
+    background: var(--black);
+    padding: 4px 14px;
+    border-radius: 15px;
+    font-size: 13px;
+    border: 1px solid var(--border-gold);
+    color: var(--text-light);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.user-chip .online-dot {
+    width: 8px;
+    height: 8px;
+  

@@ -1,7 +1,7 @@
 {
   "name": "njr-chat",
   "version": "1.0.0",
-  "description": "چت ساده برای دوستان",
+  "description": "چت گروهی برای دوستان",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

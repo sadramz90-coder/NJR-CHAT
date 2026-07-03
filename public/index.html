@@ -56,28 +56,7 @@
         </div>
     </div>
 
-    <!-- ===== تغییر مهم: لود کردن socket.io از مسیر درست ===== -->
     <script src="/socket.io/socket.io.js"></script>
-    
-    <!-- ===== تغییر مهم: اضافه کردن یک اسکریپت برای دیباگ ===== -->
-    <script>
-        console.log('✅ صفحه HTML لود شد');
-        console.log('🌐 آدرس فعلی:', window.location.href);
-    </script>
-    
     <script src="script.js"></script>
-    
-    <!-- ===== دیباگ اضافی ===== -->
-    <script>
-        // این کد رو برای دیباگ اضافه کردم
-        setTimeout(() => {
-            if (typeof io === 'undefined') {
-                console.error('❌ کتابخانه Socket.io لود نشد!');
-                alert('مشکل در اتصال به سرور! لطفاً صفحه رو رفرش کن.');
-            } else {
-                console.log('✅ Socket.io با موفقیت لود شد');
-            }
-        }, 1000);
-    </script>
 </body>
 </html>

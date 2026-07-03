@@ -5,7 +5,16 @@ const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+
+// ===== تنظیمات Socket.io برای Railway =====
+const io = socketIo(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    },
+    path: '/socket.io/',
+    transports: ['websocket', 'polling']  // اضافه کردن این خط برای اطمینان بیشتر
+});
 
 // پوشه public رو در دسترس قرار بده
 app.use(express.static(path.join(__dirname, 'public')));

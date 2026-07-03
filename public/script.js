@@ -1,4 +1,6 @@
-// ===== اتصال به سرور با تنظیمات مخصوص Railway =====
+console.log('✅ script.js لود شد');
+
+// ===== اتصال به سرور =====
 const socket = io({
     transports: ['websocket', 'polling'],
     path: '/socket.io/'
@@ -21,38 +23,85 @@ let currentUsername = '';
 let isTyping = false;
 let typingTimeout = null;
 
-// ===== ورود =====
-joinBtn.addEventListener('click', joinChat);
-usernameInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') joinChat();
+console.log('✅ المنت‌ها پیدا شدن:', {
+    loginScreen: !!loginScreen,
+    chatScreen: !!chatScreen,
+    usernameInput: !!usernameInput,
+    joinBtn: !!joinBtn
+});
+
+// ===== ورود (با دو روش مختلف برای اطمینان) =====
+
+// روش ۱: با کلیک
+joinBtn.addEventListener('click', function(e) {
+    console.log('🖱️ دکمه ورود کلیک شد!');
+    joinChat();
+});
+
+// روش ۲: با کلید Enter
+usernameInput.addEventListener('keypress', function(e) {
+    console.log('⌨️ کلید Enter زده شد!');
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        joinChat();
+    }
+});
+
+// روش ۳: با لمس (برای موبایل)
+joinBtn.addEventListener('touchstart', function(e) {
+    console.log('📱 دکمه ورود لمس شد!');
+    joinChat();
 });
 
 function joinChat() {
+    console.log('📝 تابع joinChat اجرا شد');
+    
     const username = usernameInput.value.trim();
+    console.log('👤 نام کاربری:', username);
+    
     if (!username) {
+        console.log('⚠️ نام کاربری خالی است!');
         usernameInput.style.borderColor = '#ff4444';
-        setTimeout(() => usernameInput.style.borderColor = '', 2000);
+        usernameInput.style.boxShadow = '0 0 20px rgba(255,0,0,0.3)';
+        setTimeout(() => {
+            usernameInput.style.borderColor = '';
+            usernameInput.style.boxShadow = '';
+        }, 2000);
         return;
     }
+    
+    console.log('✅ نام کاربری معتبر است');
     currentUsername = username;
+    
+    // ارسال به سرور
     socket.emit('user-joined', username);
+    console.log('📤 رویداد user-joined ارسال شد');
+    
+    // تغییر صفحه
+    console.log('🔄 تغییر صفحه از ورود به چت');
     loginScreen.style.display = 'none';
     chatScreen.style.display = 'flex';
+    
+    console.log('✅ صفحه چت نمایش داده شد');
     messageInput.focus();
+    console.log('🎯 فوکوس روی ورودی پیام');
 }
 
 // ===== خروج =====
-logoutBtn.addEventListener('click', () => {
+logoutBtn.addEventListener('click', function() {
+    console.log('🚪 خروج از چت');
     location.reload();
 });
 
 // ===== دریافت تاریخچه =====
 socket.on('message-history', (history) => {
+    console.log('📜 تاریخچه دریافت شد:', history.length, 'پیام');
     history.forEach(msg => displayMessage(msg, msg.username === currentUsername));
 });
 
 // ===== پیام‌های جدید =====
 socket.on('new-message', (data) => {
+    console.log('💬 پیام جدید:', data);
     displayMessage(data, data.username === currentUsername);
     scrollToBottom();
 });
@@ -69,67 +118,4 @@ function displayMessage(data, isOwn) {
 }
 
 // ===== ارسال پیام =====
-function sendMessage() {
-    const text = messageInput.value.trim();
-    if (!text) return;
-    
-    socket.emit('send-message', { text });
-    messageInput.value = '';
-    messageInput.focus();
-    stopTyping();
-}
-
-sendBtn.addEventListener('click', sendMessage);
-messageInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        sendMessage();
-    }
-});
-
-// ===== تایپ‌ایندیکیتور =====
-messageInput.addEventListener('input', () => {
-    if (!isTyping) {
-        isTyping = true;
-        socket.emit('typing', true);
-    }
-    clearTimeout(typingTimeout);
-    typingTimeout = setTimeout(stopTyping, 1500);
-});
-
-function stopTyping() {
-    if (isTyping) {
-        isTyping = false;
-        socket.emit('typing', false);
-    }
-}
-
-socket.on('user-typing', ({ username, isTyping }) => {
-    if (isTyping) {
-        typingIndicator.textContent = `${username} در حال تایپ است...`;
-    } else {
-        typingIndicator.textContent = '';
-    }
-});
-
-// ===== کاربران آنلاین =====
-socket.on('online-users', (users) => {
-    usersList.innerHTML = users.map(user => `
-        <span class="user-chip">
-            <span class="online-dot"></span>
-            ${escapeHtml(user)}
-        </span>
-    `).join('');
-    onlineCount.textContent = `${users.length} آنلاین`;
-});
-
-socket.on('user-joined', (username) => {
-    addSystemMessage(`${username} وارد شد 🎉`);
-});
-
-socket.on('user-left', (username) => {
-    addSystemMessage(`${username} خارج شد 👋`);
-});
-
-function addSystemMessage(text) {
-    c
+func

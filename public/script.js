@@ -1,4 +1,17 @@
-const socket = io();
+console.log('🚀 فایل script.js شروع به کار کرد');
+
+// ===== اتصال به سرور =====
+let socket;
+try {
+    socket = io({
+        transports: ['websocket', 'polling'],
+        path: '/socket.io/'
+    });
+    console.log('✅ تلاش برای اتصال به سرور...');
+} catch (error) {
+    console.error('❌ خطا در اتصال به سرور:', error);
+    alert('مشکل در اتصال به سرور! لطفاً صفحه رو رفرش کن.');
+}
 
 // ===== عناصر DOM =====
 const loginScreen = document.getElementById('login-screen');
@@ -17,6 +30,24 @@ let currentUsername = '';
 let isTyping = false;
 let typingTimeout = null;
 
+// ===== بررسی اتصال Socket =====
+if (socket) {
+    socket.on('connect', () => {
+        console.log('✅ به سرور متصل شدیم! Socket ID:', socket.id);
+    });
+
+    socket.on('connect_error', (error) => {
+        console.error('❌ خطای اتصال به سرور:', error);
+        alert('ارتباط با سرور قطع شد! لطفاً صفحه رو رفرش کن.');
+    });
+
+    socket.on('disconnect', () => {
+        console.warn('⚠️ ارتباط با سرور قطع شد');
+    });
+} else {
+    console.error('❌ Socket ایجاد نشد!');
+}
+
 // ===== ورود =====
 joinBtn.addEventListener('click', joinChat);
 usernameInput.addEventListener('keypress', (e) => {
@@ -25,13 +56,23 @@ usernameInput.addEventListener('keypress', (e) => {
 
 function joinChat() {
     const username = usernameInput.value.trim();
+    console.log('📝 تلاش برای ورود با نام:', username);
+    
     if (!username) {
         usernameInput.style.borderColor = '#ff4444';
         setTimeout(() => usernameInput.style.borderColor = '', 2000);
         return;
     }
+    
+    if (!socket) {
+        alert('ارتباط با سرور برقرار نیست!');
+        return;
+    }
+    
     currentUsername = username;
     socket.emit('user-joined', username);
+    console.log('✅ رویداد user-joined ارسال شد');
+    
     loginScreen.style.display = 'none';
     chatScreen.style.display = 'flex';
     messageInput.focus();
@@ -44,11 +85,13 @@ logoutBtn.addEventListener('click', () => {
 
 // ===== دریافت تاریخچه =====
 socket.on('message-history', (history) => {
+    console.log('📜 تاریخچه دریافت شد:', history.length, 'پیام');
     history.forEach(msg => displayMessage(msg, msg.username === currentUsername));
 });
 
 // ===== پیام‌های جدید =====
 socket.on('new-message', (data) => {
+    console.log('💬 پیام جدید:', data);
     displayMessage(data, data.username === currentUsername);
     scrollToBottom();
 });
@@ -70,67 +113,10 @@ function sendMessage() {
     if (!text) return;
     
     socket.emit('send-message', { text });
+    console.log('📤 پیام ارسال شد:', text);
     messageInput.value = '';
     messageInput.focus();
     stopTyping();
 }
 
-sendBtn.addEventListener('click', sendMessage);
-messageInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        sendMessage();
-    }
-});
-
-// ===== تایپ‌ایندیکیتور =====
-messageInput.addEventListener('input', () => {
-    if (!isTyping) {
-        isTyping = true;
-        socket.emit('typing', true);
-    }
-    clearTimeout(typingTimeout);
-    typingTimeout = setTimeout(stopTyping, 1500);
-});
-
-function stopTyping() {
-    if (isTyping) {
-        isTyping = false;
-        socket.emit('typing', false);
-    }
-}
-
-socket.on('user-typing', ({ username, isTyping }) => {
-    if (isTyping) {
-        typingIndicator.textContent = `${username} در حال تایپ است...`;
-    } else {
-        typingIndicator.textContent = '';
-    }
-});
-
-// ===== کاربران آنلاین =====
-socket.on('online-users', (users) => {
-    usersList.innerHTML = users.map(user => `
-        <span class="user-chip">
-            <span class="online-dot"></span>
-            ${escapeHtml(user)}
-        </span>
-    `).join('');
-    onlineCount.textContent = `${users.length} آنلاین`;
-});
-
-socket.on('user-joined', (username) => {
-    addSystemMessage(`${username} وارد شد 🎉`);
-});
-
-socket.on('user-left', (username) => {
-    addSystemMessage(`${username} خارج شد 👋`);
-});
-
-function addSystemMessage(text) {
-    const div = document.createElement('div');
-    div.style.cssText = `
-        text-align: center;
-        color: #999;
-        font-size: 13px;
-      
+sendBtn.addEventListe
